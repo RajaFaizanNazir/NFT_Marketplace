@@ -1,14 +1,23 @@
 const express = require("express");
 /**************************************** */
 const usersController = require("../controllers/users-controllers");
+const walletController = require("../controllers/wallet-controller");
 const validator = require("../middleware/validate");
 /**************************************** */
 const router = express.Router();
 /**************************************** */
 router.post(
   "/signup",
-  validator.credentialsValidator(),
+  [validator.credentialsValidator(), validator.nameValidator()],
   usersController.signup
+);
+/**************************************** */
+router.get("/createWallet", walletController.createWallet);
+/**************************************** */
+router.post(
+  "/signupAsAdmin",
+  [validator.credentialsValidator()],
+  usersController.signupAsAdmin
 );
 /**************************************** */
 router.post("/login", validator.credentialsValidator(), usersController.login);

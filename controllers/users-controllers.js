@@ -50,7 +50,7 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password, position } = req.body;
+  const { name, email, password, walletAddr } = req.body;
 
   let existingUser;
   try {
@@ -86,7 +86,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password: hashedPassword,
-    position,
+    walletAddr,
   });
 
   try {
@@ -101,6 +101,67 @@ const signup = async (req, res, next) => {
 
   res.status(201).json({ userId: createdUser.id, email: createdUser.email });
 };
+/**************************************** */
+const signupAsAdmin = async (req, res, next) => {
+  const errors = validator.validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data.", 422)
+    );
+  }
+
+  const { name, email, password, walletAddr } = req.body;
+
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (err) {
+    const error = new HttpError(
+      "Signing up failed, please try again later." + err,
+      500
+    );
+    return next(error);
+  }
+
+  if (existingUser) {
+    const error = new HttpError(
+      "User exists already, please login instead.",
+      422
+    );
+    return next(error);
+  }
+
+  let hashedPassword;
+  try {
+    hashedPassword = confidential.encrypt(password);
+  } catch (err) {
+    const error = new HttpError(
+      "Error Encrypting Password, please try again." + err,
+      500
+    );
+    return next(error);
+  }
+
+  const createdUser = new User({
+    name,
+    email,
+    password: hashedPassword,
+    walletAddr,
+  });
+
+  try {
+    await createdUser.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Signing up failed while saving, please try again later" + err,
+      500
+    );
+    return next(error);
+  }
+
+  res.status(201).json({ userId: createdUser.id, email: createdUser.email });
+};
+
 /**************************************** */
 const login = async (req, res, next) => {
   const errors = validator.validationResult(req);
@@ -195,5 +256,6 @@ module.exports = {
   updatePassword,
   getUsers,
   getUsersByEmail,
+  signupAsAdmin,
 };
 /**************************************** */

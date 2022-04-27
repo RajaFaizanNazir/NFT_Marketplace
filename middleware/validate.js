@@ -10,6 +10,12 @@ const credentialsValidator = () => {
 const emailValidator = () => {
   return [body("email").exists().isEmail()];
 };
+const nameValidator = () => {
+  return [body("name").exists()];
+};
+const walletValidator = () => {
+  return [body("walletAddr").exists()];
+};
 /**************************************** */
 const idValidator = () => {
   return [body("id").exists()];
@@ -19,5 +25,8 @@ module.exports = {
   credentialsValidator,
   emailValidator,
   idValidator,
+  nameValidator,
+  walletValidator,
+  validationResult,
 };
 /**************************************** */
