@@ -2,6 +2,7 @@ const express = require("express");
 /**************************************** */
 const usersController = require("../controllers/users-controllers");
 const walletController = require("../controllers/wallet-controller");
+const nftController = require("../controllers/nft-controller");
 const validator = require("../middleware/validate");
 /**************************************** */
 const router = express.Router();
@@ -11,6 +12,8 @@ router.post(
   [validator.credentialsValidator(), validator.nameValidator()],
   usersController.signup
 );
+/**************************************** */
+router.get("/createWallet", walletController.createWallet);
 /**************************************** */
 router.get("/createWallet", walletController.createWallet);
 /**************************************** */
