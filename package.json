@@ -1,0 +1,23 @@
+{
+  "name": "nft_marketplace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RajaFaizanNazir/NFT_Marketplace.git"
+  },
+  "author": "Raja Faizan Nazir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RajaFaizanNazir/NFT_Marketplace/issues"
+  },
+  "homepage": "https://github.com/RajaFaizanNazir/NFT_Marketplace#readme",
+  "dependencies": {
+    "express": "^4.18.0",
+    "mongoose": "^6.3.1"
+  }
+}
